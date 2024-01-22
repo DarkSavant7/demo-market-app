@@ -15,3 +15,17 @@ spring:
     encoding: UTF-8
     create-schemas: true
     schemas: demo-market-app
+springdoc:
+  webjars:
+    prefix:
+  swagger-ui:
+    path: /demo-market-app/v3/swagger-ui.html
+    disable-swagger-default-url: true
+    operation-sorter: method
+    enabled: true
+    operationsSorter: alpha
+    tagsSorter: alpha
+    doc-expansion: none
+  api-docs:
+    enabled: true
+    path: /demo-market-app/v3/api-docs

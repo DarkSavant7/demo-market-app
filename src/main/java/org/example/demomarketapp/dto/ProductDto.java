@@ -1,6 +1,7 @@
 
 package org.example.demomarketapp.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,9 +19,11 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @NoArgsConstructor
+@Schema(description = "test test")
 public class ProductDto {
   Long id;
   String title;
+  @Schema(description = "Description of the product")
   String description;
   BigDecimal price;
 }

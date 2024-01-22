@@ -1,5 +1,7 @@
 package org.example.demomarketapp.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
@@ -13,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
+@Tag(name = "Products")
 public interface ProductApi {
 
   @PostMapping("/products")
@@ -22,6 +26,7 @@ public interface ProductApi {
   ResponseEntity<ProductDto> findById(@PathVariable(name = "id") Long id);
 
   @GetMapping("/products")
+  @Operation(summary = "Get all products")
   ResponseEntity<List<ProductDto>> findAll();
 
   @DeleteMapping("/products/{id}")
