@@ -1,0 +1,17 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:35432/demo-market-app?currentSchema=demo-market-app
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    url: jdbc:postgresql://localhost:35432/demo-market-app?currentSchema=demo-market-app
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    encoding: UTF-8
+    create-schemas: true
+    schemas: demo-market-app
