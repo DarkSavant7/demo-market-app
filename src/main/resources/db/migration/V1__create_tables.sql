@@ -4,6 +4,7 @@ CREATE TABLE users
     login    TEXT NOT NULL,
     password TEXT NOT NULL,
     email    TEXT,
+    enabled  BOOLEAN,
     created  TIMESTAMP DEFAULT NOW(),
     updated  TIMESTAMP DEFAULT NOW()
 );

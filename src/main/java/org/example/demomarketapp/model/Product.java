@@ -16,6 +16,8 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
 
 @Entity
 @Table(name = "products")
@@ -46,4 +48,10 @@ public class Product {
 
   @UpdateTimestamp
   LocalDateTime updated;
+
+//  @CreatedBy
+//  Long createdBy;
+//
+//  @LastModifiedBy
+//  Long updatedBy;
 }
