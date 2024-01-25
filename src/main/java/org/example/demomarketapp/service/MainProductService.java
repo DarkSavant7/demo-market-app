@@ -3,6 +3,7 @@ package org.example.demomarketapp.service;
 import jakarta.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.example.demomarketapp.dto.ProductDto;
+import org.example.demomarketapp.dto.ProductServiceDto;
 import org.example.demomarketapp.dto.ProductShortDto;
+import org.example.demomarketapp.dto.ProductWithServiceDto;
 import org.example.demomarketapp.error.ProductNotFoundException;
 import org.example.demomarketapp.model.Product;
 import org.example.demomarketapp.repository.ProductRepository;
@@ -88,6 +91,19 @@ public class MainProductService implements ProductService {
     return productRepository.findAllShorts();
   }
 
+  @Override
+  public ProductWithServiceDto findProductServiceById(Long id) {
+    return productRepository.findById(id)
+            .map(prod -> ProductWithServiceDto.builder()
+                    .id(prod.getId())
+                    .title(prod.getTitle())
+                    .description(prod.getDescription())
+                    .price(prod.getPrice())
+                    .productServiceDtos(mapServices(prod.getProductServices()))
+                    .build())
+            .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+  }
+
 //  //TODO remove from service, use mapstruct or something else
   private ProductDto fromEntity(Product product) {
     return new ProductDto(product.getId(), product.getTitle(), product.getDescription(),
@@ -96,6 +112,16 @@ public class MainProductService implements ProductService {
 
   private Product toEntity(ProductDto dto) {
     return new Product(dto.getId(), dto.getTitle(), dto.getDescription(),
-        dto.getPrice(), LocalDateTime.now(), LocalDateTime.now());
+            dto.getPrice(), LocalDateTime.now(), LocalDateTime.now(), Collections.emptyList());
+  }
+
+  private List<ProductServiceDto> mapServices(List<org.example.demomarketapp.model.ProductService> productServices) {
+    return productServices.stream()
+            .map(productService -> ProductServiceDto.builder()
+                    .title(productService.getTitle())
+                    .description(productService.getDescription())
+                    .price(productService.getPrice())
+                    .build())
+            .toList();
   }
 }

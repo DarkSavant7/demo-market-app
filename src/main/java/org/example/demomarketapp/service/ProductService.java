@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import org.example.demomarketapp.dto.ProductDto;
 import org.example.demomarketapp.dto.ProductShortDto;
+import org.example.demomarketapp.dto.ProductWithServiceDto;
 
 public interface ProductService {
 
@@ -20,5 +21,8 @@ public interface ProductService {
   ProductDto findByTitleExact(String title);
 
   List<ProductDto> findByPriceGreaterThan(BigDecimal price);
+
   Set<ProductShortDto> findAllShorts();
+
+  ProductWithServiceDto findProductServiceById(Long id);
 }

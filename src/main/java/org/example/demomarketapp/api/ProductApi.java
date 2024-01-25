@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import org.example.demomarketapp.dto.ProductDto;
 import org.example.demomarketapp.dto.ProductShortDto;
+import org.example.demomarketapp.dto.ProductWithServiceDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,4 +41,7 @@ public interface ProductApi {
 
   @GetMapping("/products/shorts")
   Set<ProductShortDto> findAllShorts();
+
+  @GetMapping("/products/service/{id}")
+  ProductWithServiceDto findProductServiceById(@PathVariable(name = "id") Long id);
 }
