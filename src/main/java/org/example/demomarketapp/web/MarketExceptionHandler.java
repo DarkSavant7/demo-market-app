@@ -27,11 +27,5 @@ public class MarketExceptionHandler {
             default -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new ErrorDto("Something Wrong", exception.getMessage()));
         };
-
-//        ErrorDto errorDto = new ErrorDto(
-//                "Something Wrong",
-//                exception.getMessage()
-//        );
-//        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDto);
     }
 }
