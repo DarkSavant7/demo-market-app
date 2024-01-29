@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.example.demomarketapp.dto.UserDto;
+import org.example.demomarketapp.dto.UserInformationDto;
 import org.example.demomarketapp.model.User;
 import org.example.demomarketapp.model.Role;
 import org.example.demomarketapp.repository.UserRepository;
@@ -46,6 +47,11 @@ public class MainUserService implements UserService {
   @Override
   public User getByEmail(String email) {
     return userRepository.findUserByEmail(email).orElseThrow();
+  }
+
+  @Override
+  public List<UserInformationDto> getAllEnableUsers() {
+    return userRepository.findAllUserWhereEnableTrue();
   }
 
   private UserDto fromEntity(User user) {

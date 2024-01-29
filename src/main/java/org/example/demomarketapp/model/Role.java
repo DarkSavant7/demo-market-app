@@ -1,4 +1,3 @@
-
 package org.example.demomarketapp.model;
 
 import jakarta.persistence.Column;
