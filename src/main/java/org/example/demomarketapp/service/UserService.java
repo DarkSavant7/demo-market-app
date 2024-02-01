@@ -7,7 +7,9 @@ import org.example.demomarketapp.model.User;
 import java.util.List;
 
 public interface UserService {
-   UserDto create(UserDto dto);
-   User getByEmail(String email);
-   List<UserInformationDto> getAllEnableUsers();
+    UserDto create(UserDto dto);
+
+    User getByEmail(String email);
+
+    List<UserInformationDto> getAllEnableUsers();
 }
