@@ -13,15 +13,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MainRoleService implements RoleService {
-  RoleRepository roleRepository;
+    RoleRepository roleRepository;
 
-  @Override
-  public Role get(Long id) {
-    return roleRepository.findById(id).orElseThrow();
-  }
+    @Override
+    public Role get(Long id) {
+        return roleRepository.findById(id).orElseThrow();
+    }
 
-  @Override
-  public Role getReference(Long id) {
-    return roleRepository.getReferenceById(id);
-  }
+    @Override
+    public Role getReference(Long id) {
+        return roleRepository.getReferenceById(id);
+    }
 }

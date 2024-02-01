@@ -9,8 +9,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 public class DemoMarketAppApplication {
 
-  public static void main(String[] args) {
-    SpringApplication.run(DemoMarketAppApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(DemoMarketAppApplication.class, args);
+    }
 
 }

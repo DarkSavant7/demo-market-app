@@ -1,12 +1,6 @@
 package org.example.demomarketapp.service;
 
 import jakarta.transaction.Transactional;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,108 +14,119 @@ import org.example.demomarketapp.model.Product;
 import org.example.demomarketapp.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class MainProductService implements ProductService {
 
-  ProductRepository productRepository;
+    ProductRepository productRepository;
 
-  @Override
-  @Transactional
-  public ProductDto create(ProductDto dto) {
-    log.debug("Saving new product {}", dto.getTitle());
-    var entity = this.toEntity(dto);
-    var saved = productRepository.save(entity);
-    return this.fromEntity(saved);
-  }
-
-  @Override
-  public ProductDto findById(Long id) {
-    log.debug("Looking for the product with id {}", id);
-    return productRepository.findById(id)
-        .map(this::fromEntity)
-//        .orElse(new ProductDto(0L, "Zero", "", BigDecimal.ZERO));
-        .orElseThrow(() -> new ProductNotFoundException(id));
-  }
-
-  @Override
-  public List<ProductDto> findAll() {
-    log.debug("Looking for all the products");
-    return productRepository.findAll().stream()
-        .map(this::fromEntity)
-        .toList();
-  }
-
-  @Override
-  @Transactional
-  public void deleteById(Long id) {
-    log.debug("Deleting the product with id {}", id);
-    if (!productRepository.existsById(id)) {
-      throw new ProductNotFoundException(id);
+    @Override
+    @Transactional
+    public ProductDto create(ProductDto dto) {
+        log.debug("Saving new product {}", dto.getTitle());
+        var entity = this.toEntity(dto);
+        var saved = productRepository.save(entity);
+        return this.fromEntity(saved);
     }
-    productRepository.deleteById(id);
-  }
 
-  @Override
-  public List<ProductDto> findByTitleLike(String title) {
-    return productRepository.findAllByTitleLike(title).stream()
-        .map(this::fromEntity)
-        .toList();
-  }
+    @Override
+    public ProductDto findById(Long id) {
+        log.debug("Looking for the product with id {}", id);
+        return productRepository.findById(id)
+                .map(this::fromEntity)
+//        .orElse(new ProductDto(0L, "Zero", "", BigDecimal.ZERO));
+                .orElseThrow(() -> new ProductNotFoundException(id));
+    }
 
-  @Override
-  public ProductDto findByTitleExact(String title) {
-    log.debug("Looking for the product with title {}", title);
-    return productRepository.findByTitle(title)
-        .map(this::fromEntity)
-        .orElseThrow(() -> new ProductNotFoundException(title));
-  }
+    @Override
+    public List<ProductDto> findAll() {
+        log.debug("Looking for all the products");
+        return productRepository.findAll().stream()
+                .map(this::fromEntity)
+                .toList();
+    }
 
-  @Override
-  public List<ProductDto> findByPriceGreaterThan(BigDecimal price) {
-    return productRepository.findAllByPriceIsGreaterThanEqual(price).stream()
-        .map(this::fromEntity)
-        .toList();
-  }
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        log.debug("Deleting the product with id {}", id);
+        if (!productRepository.existsById(id)) {
+            throw new ProductNotFoundException(id);
+        }
+        productRepository.deleteById(id);
+    }
 
-  @Override
-  public Set<ProductShortDto> findAllShorts() {
-    return productRepository.findAllShorts();
-  }
+    @Override
+    public List<ProductDto> findByTitleLike(String title) {
+        return productRepository.findAllByTitleLike(title).stream()
+                .map(this::fromEntity)
+                .toList();
+    }
 
-  @Override
-  public ProductWithServiceDto findProductServiceById(Long id) {
-    return productRepository.findById(id)
-            .map(prod -> ProductWithServiceDto.builder()
-                    .id(prod.getId())
-                    .title(prod.getTitle())
-                    .description(prod.getDescription())
-                    .price(prod.getPrice())
-                    .productServiceDtos(mapServices(prod.getProductServices()))
-                    .build())
-            .orElseThrow(() -> new ProductNotFoundException("Product not found"));
-  }
+    @Override
+    public ProductDto findByTitleExact(String title) {
+        log.debug("Looking for the product with title {}", title);
+        return productRepository.findByTitle(title)
+                .map(this::fromEntity)
+                .orElseThrow(() -> new ProductNotFoundException(title));
+    }
 
-//  //TODO remove from service, use mapstruct or something else
-  private ProductDto fromEntity(Product product) {
-    return new ProductDto(product.getId(), product.getTitle(), product.getDescription(),
-        product.getPrice());
-  }
+    @Override
+    public List<ProductDto> findByPriceGreaterThan(BigDecimal price) {
+        return productRepository.findAllByPriceIsGreaterThanEqual(price).stream()
+                .map(this::fromEntity)
+                .toList();
+    }
 
-  private Product toEntity(ProductDto dto) {
-    return new Product(dto.getId(), dto.getTitle(), dto.getDescription(),
-            dto.getPrice(), LocalDateTime.now(), LocalDateTime.now(), Collections.emptyList());
-  }
+    @Override
+    public Set<ProductShortDto> findAllShorts() {
+        return productRepository.findAllShorts();
+    }
 
-  private List<ProductServiceDto> mapServices(List<org.example.demomarketapp.model.ProductService> productServices) {
-    return productServices.stream()
-            .map(productService -> ProductServiceDto.builder()
-                    .title(productService.getTitle())
-                    .description(productService.getDescription())
-                    .price(productService.getPrice())
-                    .build())
-            .toList();
-  }
+    @Override
+    public ProductWithServiceDto findProductServiceById(Long id) {
+        return productRepository.findById(id)
+                .map(prod -> ProductWithServiceDto.builder()
+                        .id(prod.getId())
+                        .title(prod.getTitle())
+                        .description(prod.getDescription())
+                        .price(prod.getPrice())
+                        .productServiceDtos(mapServices(prod.getProductServices()))
+                        .build())
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
+    }
+
+    @Override
+    public boolean existsByDescriptionAndTitleAndPrice(String description, String title, BigDecimal price) {
+        return productRepository.existsByDescriptionAndTitleAndPrice(description, title, price);
+    }
+
+    //  //TODO remove from service, use mapstruct or something else
+    private ProductDto fromEntity(Product product) {
+        return new ProductDto(product.getId(), product.getTitle(), product.getDescription(),
+                product.getPrice());
+    }
+
+    private Product toEntity(ProductDto dto) {
+        return new Product(dto.getId(), dto.getTitle(), dto.getDescription(),
+                dto.getPrice(), LocalDateTime.now(), LocalDateTime.now(), Collections.emptyList());
+    }
+
+    private List<ProductServiceDto> mapServices(List<org.example.demomarketapp.model.ProductService> productServices) {
+        return productServices.stream()
+                .map(productService -> ProductServiceDto.builder()
+                        .title(productService.getTitle())
+                        .description(productService.getDescription())
+                        .price(productService.getPrice())
+                        .build())
+                .toList();
+    }
 }

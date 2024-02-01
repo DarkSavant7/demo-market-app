@@ -21,11 +21,7 @@ public class MarketExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ErrorDto> exceptionHandle(Exception exception) {
-        return switch (exception) {
-            case ProductNotFoundException exe -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ErrorDto("Product Not Found", exe.getMessage()));
-            default -> ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ErrorDto("Something Wrong", exception.getMessage()));
-        };
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(new ErrorDto("Something Wrong", exception.getMessage()));
     }
 }
