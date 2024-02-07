@@ -21,15 +21,15 @@ public class User {
     @Column(name = "id")
     private Long id;
     @Column
-    private String phone;
+    private String login;
     @Column
     private String password;
     @Column
     private String email;
-    @Column
-    private String firstName;
-    @Column
-    private String lastName;
+//    @Column
+//    private String firstName;
+//    @Column
+//    private String lastName;
     @Column
     private Boolean enabled;
 

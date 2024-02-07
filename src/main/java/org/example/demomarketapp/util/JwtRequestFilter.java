@@ -38,25 +38,30 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         username = jwtTokenUtil.getUsernameFromToken(jwt);
         var token = new UsernamePasswordAuthenticationToken(username, null,
             jwtTokenUtil.getRolesFromToken(jwt).stream().map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList()));
+                .toList());
         SecurityContextHolder.getContext().setAuthentication(token);
       } catch (ExpiredJwtException | MalformedJwtException e) {
-        // this catch block is optional of course
-        // but I've done it for correct returning HTTP code then token expired
-        StringBuilder sb = new StringBuilder();
-        sb.append("{ ");
-        sb.append("\"error\": \"Unauthorized\", ");
-        sb.append("\"message\": \"Token expired or invalid\", ");
-        sb.append("\"path\": \"")
-            .append(request.getRequestURL())
-            .append("\"");
-        sb.append("} ");
-
-        response.setContentType("application/json");
-        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.getWriter().write(sb.toString());
+        elaborateTokenError(request, response);
       }
     }
     filterChain.doFilter(request, response);
+  }
+
+  private void elaborateTokenError(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
+    // this catch block is optional of course
+    // but I've done it for correct returning HTTP code then token expired
+    StringBuilder sb = new StringBuilder();
+    sb.append("{ ");
+    sb.append("\"error\": \"Unauthorized\", ");
+    sb.append("\"message\": \"Token expired or invalid\", ");
+    sb.append("\"path\": \"")
+        .append(request.getRequestURL())
+        .append("\"");
+    sb.append("} ");
+
+    response.setContentType("application/json");
+    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    response.getWriter().write(sb.toString());
   }
 }

@@ -25,28 +25,29 @@ public class SecurityConfig {
 
   public static final String ACTUATOR_PATH = "/actuator/**";
   public static final String AUTH_PATH = "/auth/**";
-  public static final String SWAGGER_UI_PATH = "/market/v3/swagger-ui/**";
-  public static final String SWAGGER_UI_HTML_PATH = "/market/v3/swagger-ui.html";
-  public static final String V_3_API_DOCS_PATH = "/market/v3/api-docs/**";
-  public static final String V_3_API_DOCS_YAML_PATH = "/market/v3/api-docs.yaml";
+  public static final String SWAGGER_UI_PATH = "/demo-market-app/v3/swagger-ui/**";
+  public static final String SWAGGER_UI_HTML_PATH = "/demo-market-app/v3/swagger-ui.html";
+  public static final String V_3_API_DOCS_PATH = "/demo-market-app/v3/api-docs/**";
+  public static final String V_3_API_DOCS_YAML_PATH = "/demo-market-app/v3/api-docs.yaml";
   public static final String ERROR = "/error";
 
+  private static final List<String> permitAllMatchers = new ArrayList<>(
+      asList(ACTUATOR_PATH, AUTH_PATH, SWAGGER_UI_PATH, V_3_API_DOCS_PATH, V_3_API_DOCS_YAML_PATH,
+          ERROR, SWAGGER_UI_HTML_PATH));
 
   @Bean
   public DefaultSecurityFilterChain securityFilterChain(HttpSecurity http,
       JwtRequestFilter jwtRequestFilter)
       throws Exception {
 
-    List<String> permitAllMatchers = new ArrayList<>(
-        asList(ACTUATOR_PATH, AUTH_PATH, SWAGGER_UI_PATH, V_3_API_DOCS_PATH, V_3_API_DOCS_YAML_PATH,
-            ERROR, SWAGGER_UI_HTML_PATH));
-
     return http
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(permitAllMatchers.toArray(new String[0]))
             .permitAll()
-            .requestMatchers("/market/admin/**")
+            .requestMatchers("/demo-market-app/admin/**", "/demo-market-app/secured/**")
             .hasAnyRole("ADMIN", "SUPERADMIN")
+            .requestMatchers("/demo-market-app/management/**")
+            .hasAnyRole("SUPERADMIN", "MANAGER")
             .anyRequest()
             .authenticated())
         .sessionManagement(

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.example.demomarketapp.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,23 +29,24 @@ public class JwtTokenUtil {
 
     public String generateTokenFromUser(User user) {
         Map<String, Object> claims = new HashMap<>();
-        List<String> roles = user.getRoles()
+        var roles = user.getRoles()
                 .stream()
                 .map(r -> new SimpleGrantedAuthority(r.getName()))
                 .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .toList();
         claims.put("roles", roles);
         claims.put("some1", "some info");
         claims.put("some2", "some info # 2");
+        claims.put("some list", List.of("one", "two", "three"));
 
         Date issuedDate = new Date();
         Date expired = new Date(issuedDate.getTime() + minutesToExpire * 1000 * 60);
 
         return Jwts.builder()
-                .setClaims(claims)
-                .setSubject(user.getEmail())
-                .setIssuedAt(issuedDate)
-                .setExpiration(expired)
+                .claims(claims)
+                .subject(user.getEmail())
+                .issuedAt(issuedDate)
+                .expiration(expired)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
     }

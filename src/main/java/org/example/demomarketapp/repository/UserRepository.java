@@ -16,7 +16,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByEmail(String email);
 
-    @Query("select new org.example.demomarketapp.dto.UserInformationDto(" +
-            "u.id, u.phone, u.email, u.firstName, u.lastName) from User u where u.enabled = true")
-    List<UserInformationDto> findAllUserWhereEnableTrue();
+//    @Query("select new org.example.demomarketapp.dto.UserInformationDto(" +
+//            "u.id, u.phone, u.email, u.firstName, u.lastName) from User u where u.enabled = true")
+//    List<UserInformationDto> findAllUserWhereEnableTrue();
 }
