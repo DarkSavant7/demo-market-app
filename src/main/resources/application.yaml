@@ -29,3 +29,7 @@ springdoc:
   api-docs:
     enabled: true
     path: /demo-market-app/v3/api-docs
+jwt:
+  secret: ihjfjfnvjofnvjerfnvjenvjernvjelrnvjervjnerjlnverjlnvjerbv
+  expiration:
+    minutes: 200
