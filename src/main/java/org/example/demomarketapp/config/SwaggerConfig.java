@@ -9,6 +9,11 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class SwaggerConfig {
+    //JUL (Java util logging) default lib
+    //log4j (log4j1.xx(outdated) && log4j2.xx)
+    //logback
+    //slf4j -> wrapper
+
     @Bean
     public OpenAPI customOpenApi() {
         return new OpenAPI()

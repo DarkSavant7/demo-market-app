@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="15 minutes">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+
+    <property name="maxFileSize" value="5MB" />
+    <property name="minIndex" value="1" />
+    <property name="maxIndex" value="30" />
+    <property name="maxHistory" value="30" />
+    <property name="totalSizeCap" value="3GB" />
+    <property name="datePattern" value="%d{yyyy-MM-dd}" />
+    <property name="logPath" value="log/" />
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_OVERALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}full.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}full_${datePattern}.log.zip</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE_CONTROLLERS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}controllers-journal.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}controllers-journal_${datePattern}.log.zip</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} :: %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE_JOURNAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${logPath}user-journal.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}user-journal_${datePattern}.log.zip</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} :: %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <file>${logPath}error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}error_${datePattern}.log.zip</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="FILE_WEB" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+        <file>${logPath}web.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}web_${datePattern}.log.zip</fileNamePattern>
+            <maxHistory>${maxHistory}</maxHistory>
+            <totalSizeCap>${totalSizeCap}</totalSizeCap>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_OVERALL"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </root>
+    <logger name="org.springframework.web" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_OVERALL"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </logger>
+    <logger name="org.springframework.Hibernate" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_OVERALL"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </logger>
+    <logger name="org.springframework.Data" level="ERROR" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_OVERALL"/>
+        <appender-ref ref="FILE_ERROR"/>
+    </logger>
+    <logger name="de.telran" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_OVERALL"/>
+        <appender-ref ref="FILE_ERROR"/>
+        <appender-ref ref="FILE_JOURNAL"/>
+    </logger>
+    <logger name="de.telran.market.web.ProductController" level="TRACE" additivity="false" >
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE_WEB"/>
+<!--        <appender-ref ref="FILE_OVERALL"/>-->
+<!--        <appender-ref ref="FILE_ERROR"/>-->
+<!--        <appender-ref ref="FILE_JOURNAL"/>-->
+<!--        <appender-ref ref="FILE_CONTROLLERS"/>-->
+    </logger>
+<!--    <logger name="de.telran.market.services.PaymentService" level="DEBUG" additivity="false">-->
+<!--        <appender-ref ref="FILE_OVERALL"/>-->
+<!--    </logger>-->
+
+</configuration>
