@@ -15,6 +15,12 @@ spring:
     encoding: UTF-8
     create-schemas: true
     schemas: demo-market-app
+#logging:
+#  pattern: '%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36}.%M - %msg%n'
+#  level:
+#    org.example.demomarketapp: info
+#    org.example.demomarketapp.service.MainUserService: trace
+#  config: /home/persi/Documents/demo-market-app/src/main/resources/logback-spring.xml
 springdoc:
   webjars:
     prefix:
