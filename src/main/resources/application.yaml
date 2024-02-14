@@ -21,6 +21,7 @@ spring:
 #    org.example.demomarketapp: info
 #    org.example.demomarketapp.service.MainUserService: trace
 #  config: /home/persi/Documents/demo-market-app/src/main/resources/logback-spring.xml
+#  config: ./config/log/logback-spring.xml
 springdoc:
   webjars:
     prefix:

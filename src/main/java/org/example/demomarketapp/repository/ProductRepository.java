@@ -29,7 +29,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "select new org.example.demomarketapp.dto.ProductShortDto(prod.id, prod.title) from Product prod", nativeQuery = false)
     Set<ProductShortDto> findAllShorts();
 
-    boolean existsByDescriptionAndTitleAndPrice(
+    Boolean existsByDescriptionAndTitleAndPrice(
             @Param("description") String description,
             @Param("title") String title,
             @Param("price") BigDecimal price);
